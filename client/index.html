@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+
+<body>
+    <div>
+        You<br>
+        <form id="chat-form" method="post">
+            Enter message to send: <input id="chat-input" type="text" name="chat-input">
+            <input id="send-button" type="button" value="Send">
+        </form>
+    </div>
+    <div>
+        Server<br>
+        <div id="server-text">
+        </div>
+    </div>
+</body>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/jquery-2.0.2.min.js"></script>
+<script>
+    var server = io.connect('http://codeschool-nodejs-06-socket_io.feheren-fekete.c9.io');
+    $('#send-button').click(function(event) {
+        var message = $('#chat-input').val();
+        server.emit('message', { message : message });
+    });
+    server.on('message', function(data) {
+        var message = data.message;
+        $('#server-text').append('<br>' + message);
+    });
+</script>
+
+</html>
